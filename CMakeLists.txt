@@ -116,7 +116,8 @@ set(ALL_LIBRARY_SRCS
 set(ALL_TESTS
 #        async_grpc/client_test.cc
         async_grpc/server_test.cc
-        async_grpc/type_traits_test.cc)
+#        async_grpc/type_traits_test.cc
+        )
 
 set(ALL_PROTOS
         async_grpc/proto/math_service.proto)
@@ -145,15 +146,15 @@ set_source_files_properties(${ALL_PROTO_SRCS} ${ALL_PROTO_HDRS} PROPERTIES GENER
 
 add_library(${PROJECT_NAME} ${ALL_LIBRARY_HDRS} ${ALL_LIBRARY_SRCS} ${ALL_PROTO_HDRS} ${ALL_PROTO_SRCS})
 
-foreach(RELATIVEPATH ${ALL_TESTS})
-  get_filename_component(DIR ${RELATIVEPATH} DIRECTORY)
-  get_filename_component(FILENAME ${RELATIVEPATH} NAME_WE)
-  # Replace slashes as required for CMP0037.
-  string(REPLACE "/" "." TEST_TARGET_NAME "${DIR}/${FILENAME}")
-  google_test("${TEST_TARGET_NAME}" ${RELATIVEPATH})
-  target_link_libraries(${TEST_TARGET_NAME} PUBLIC ${GMOCK_LIBRARY})
-  target_link_libraries("${TEST_TARGET_NAME}" PUBLIC grpc++)
-endforeach()
+#foreach(RELATIVEPATH ${ALL_TESTS})
+#  get_filename_component(DIR ${RELATIVEPATH} DIRECTORY)
+#  get_filename_component(FILENAME ${RELATIVEPATH} NAME_WE)
+#  # Replace slashes as required for CMP0037.
+#  string(REPLACE "/" "." TEST_TARGET_NAME "${DIR}/${FILENAME}")
+#  google_test("${TEST_TARGET_NAME}" ${RELATIVEPATH})
+#  target_link_libraries(${TEST_TARGET_NAME} PUBLIC ${GMOCK_LIBRARY})
+#  target_link_libraries("${TEST_TARGET_NAME}" PUBLIC grpc++)
+#endforeach()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC glog)
 target_link_libraries(${PROJECT_NAME} PUBLIC gflags)
