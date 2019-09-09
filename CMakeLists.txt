@@ -20,7 +20,7 @@ project(async_grpc)
 include(ExternalProject)
 ExternalProject_Add(googletest-distribution
         GIT_REPOSITORY "https://github.com/google/googletest.git"
-        GIT_COMMIT_HASH="e3bd4cbeaeef3cee65a68a8bd3c535cb779e9b6d"
+        GIT_TAG="e3bd4cbeaeef3cee65a68a8bd3c535cb779e9b6d"
         GIT_BRANCH "master"
         PREFIX "${CMAKE_CURRENT_BINARY_DIR}/googletest"
         )
