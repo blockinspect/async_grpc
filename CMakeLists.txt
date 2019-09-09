@@ -11,10 +11,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+execute_process(COMMAND git submodule update --init --recursive)
 
 cmake_minimum_required(VERSION 2.8.12)  # Ships with Ubuntu 14.04 (Trusty)
 
 project(async_grpc)
+
+include(ExternalProject)
+ExternalProject_Add(googletest-distribution
+        GIT_REPOSITORY "https://github.com/google/googletest.git"
+        GIT_COMMIT_HASH="e3bd4cbeaeef3cee65a68a8bd3c535cb779e9b6d"
+        GIT_BRANCH "master"
+        PREFIX "${CMAKE_CURRENT_BINARY_DIR}/googletest"
+        )
+
 
 set(ASYNC_GRPC_MAJOR_VERSION 0)
 set(ASYNC_GRPC_MINOR_VERSION 1)
