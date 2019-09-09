@@ -57,7 +57,7 @@ ExternalProject_Add(googletest
         -Dgtest_force_shared_crt:BOOL=ON
         )
 include_directories(external/googletest/include)
-include_directories(external/googletest/)
+include_directories(external/googletest)
 
 
 set(ASYNC_GRPC_MAJOR_VERSION 0)
