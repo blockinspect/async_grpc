@@ -18,46 +18,12 @@ cmake_minimum_required(VERSION 2.8.12)  # Ships with Ubuntu 14.04 (Trusty)
 project(async_grpc)
 
 include(ExternalProject)
-#set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
-#
-#ExternalProject_Add(googletest
-#        GIT_REPOSITORY "https://github.com/google/googletest"
-#        GIT_REVISION "e3bd4cbeaeef3cee65a68a8bd3c535cb779e9b6d"
-#        PREFIX "${CMAKE_CURRENT_BINARY_DIR}/googletest"
-#        )
-#
-#
-#include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
-
-set(googletest_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/googletest/src/googletest/googletest/include)
-set(googletest_URL https://github.com/google/googletest.git)
-set(googletest_BUILD ${CMAKE_CURRENT_BINARY_DIR}/googletest/)
-set(googletest_TAG e3bd4cbeaeef3cee65a68a8bd3c535cb779e9b6d)
-
-if(WIN32)
-  set(googletest_STATIC_LIBRARIES
-          ${CMAKE_CURRENT_BINARY_DIR}/googletest/src/googletest/googletest/$(Configuration)/gtest.lib)
-else()
-  set(googletest_STATIC_LIBRARIES
-          ${CMAKE_CURRENT_BINARY_DIR}/googletest/src/googletest/googletest/${CMAKE_BUILD_TYPE}/gtest.a)
-endif()
-
-ExternalProject_Add(googletest
-        PREFIX googletest
-        GIT_REPOSITORY ${googletest_URL}
-        GIT_TAG ${googletest_TAG}
-        DOWNLOAD_DIR "${DOWNLOAD_LOCATION}"
-        BUILD_IN_SOURCE 1
-        #PATCH_COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/patches/grpc/CMakeLists.txt ${GRPC_BUILD}
-        INSTALL_COMMAND ""
-        CMAKE_CACHE_ARGS
-        -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-        -DBUILD_GMOCK:BOOL=ON
-        -DBUILD_GTEST:BOOL=ON
-        -Dgtest_force_shared_crt:BOOL=ON
+ExternalProject_Add(googletest-distribution
+        GIT_REPOSITORY "https://github.com/google/googletest.git"
+        GIT_TAG="e3bd4cbeaeef3cee65a68a8bd3c535cb779e9b6d"
+        GIT_BRANCH "master"
+        PREFIX "${CMAKE_CURRENT_BINARY_DIR}/googletest"
         )
-include_directories(external/googletest/include)
-include_directories(external/googletest)
 
 
 set(ASYNC_GRPC_MAJOR_VERSION 0)
@@ -69,7 +35,6 @@ set(ASYNC_GRPC_SOVERSION ${ASYNC_GRPC_MAJOR_VERSION}.${ASYNC_GRPC_MINOR_VERSION}
 include("${PROJECT_SOURCE_DIR}/cmake/functions.cmake")
 google_initialize_async_grpc_project()
 enable_testing()
-
 find_package(GMock REQUIRED)
 find_package(Protobuf 3.0.0 REQUIRED)
 
@@ -138,7 +103,7 @@ foreach(RELATIVEPATH ${ALL_PROTOS})
 endforeach()
 set_source_files_properties(${ALL_PROTO_SRCS} ${ALL_PROTO_HDRS} PROPERTIES GENERATED TRUE)
 
-add_library(${PROJECT_NAME} ${ALL_LIBRARY_HDRS} ${ALL_LIBRARY_SRCS} ${ALL_PROTO_HDRS} ${ALL_PROTO_SRCS} )
+add_library(${PROJECT_NAME} ${ALL_LIBRARY_HDRS} ${ALL_LIBRARY_SRCS} ${ALL_PROTO_HDRS} ${ALL_PROTO_SRCS})
 
 foreach(RELATIVEPATH ${ALL_TESTS})
   get_filename_component(DIR ${RELATIVEPATH} DIRECTORY)
